@@ -45,7 +45,7 @@ class tor(object):
 			print(line)
 
 	def launch_tor(self):
-		print(term.format("Cargando Tor:\n", term.Attr.BOLD))
+		print(term.format("Starting Tor:\n", term.Attr.BOLD))
 		try:
 			if self.verbose == 1:
 				self.tor_process = stem.process.launch_tor_with_config(
@@ -62,7 +62,7 @@ class tor(object):
 		except:
 			print("Error al levantar tor comprueba que no este iniciado ya, o no este instalado")
 			sys.exit(0)
-		print(term.format("\nSalida Creada\n", term.Attr.BOLD))
+		print(term.format("\Output created\n", term.Attr.BOLD))
 
 	def quit(self):
 		if self.tor_process.poll() is None:
@@ -76,7 +76,7 @@ class tor(object):
 				return r.read()
 			
 		except:
-			print("Se tiene que especificar una url correcta(con http/https)")
+			print(" You need specify a correct url(with http/https)")
 			self.quit()
 			sys.exit(0)
 
