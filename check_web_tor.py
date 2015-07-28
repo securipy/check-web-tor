@@ -60,7 +60,7 @@ class tor(object):
 					init_msg_handler='',
 				)
 		except:
-			print("Error al levantar tor comprueba que no este iniciado ya, o no este instalado")
+			print("Error starting Tor, check that it does not already started, or is installed")
 			sys.exit(0)
 		print(term.format("\Output created\n", term.Attr.BOLD))
 
