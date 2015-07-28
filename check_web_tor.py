@@ -103,7 +103,7 @@ if __name__ == '__main__':
 		try:
 			options.port = int(options.port)
 		except:
-			print("You need a por number")
+			print("You need a port number")
 			sys.exit(0)
 	if options.nodes == None:
 		options.nodes = '{ru}'
