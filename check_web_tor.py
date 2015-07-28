@@ -14,6 +14,8 @@
 
 import sys
 from contextlib import closing
+from optparse import OptionParser
+import argparse
 import socks  # $ pip install PySocks
 from sockshandler import SocksiPyHandler  # see pysocks repository, pip install pysocks
 import stem.process  # $ pip install stem
@@ -47,7 +49,7 @@ class tor(object):
 	def launch_tor(self):
 		print(term.format("Starting Tor:\n", term.Attr.BOLD))
 		try:
-			if self.verbose == 1:
+			if self.verbose == 1 or self.verbose == '1':
 				self.tor_process = stem.process.launch_tor_with_config(
 					tor_cmd=self.tor_cmd,
 					config=self.config,
@@ -62,7 +64,7 @@ class tor(object):
 		except:
 			print("Error starting Tor, check that it does not already started, or is installed")
 			sys.exit(0)
-		print(term.format("\Output created\n", term.Attr.BOLD))
+		print(term.format("\nOutput created\n", term.Attr.BOLD))
 
 	def quit(self):
 		if self.tor_process.poll() is None:
@@ -81,9 +83,36 @@ class tor(object):
 			sys.exit(0)
 
 if __name__ == '__main__':
-	print("ex: http://ofkztxcohimx34la.onion")
-	url = raw_input("Url: ")
-	oculto = tor()
-	print oculto.query(url)
-	oculto.quit()
+	parser = argparse.ArgumentParser(description='Designed for easy navigation in the Tor network')
+	parser.add_argument('-u', '--url', metavar='url', dest='url', help='Insert url for check ')
+	parser.add_argument('-p', '--port', metavar='port', dest='port', help='Port for tor network')
+	parser.add_argument('-i', '--ip', metavar='ip', dest='ip', help='Ip for tor network')
+	parser.add_argument('-n', '--nodes', metavar='nodes', dest='nodes', help='Output nodes, for tor network')
+	parser.add_argument('-v', '--verbose', metavar='verbose', dest='verbose', help='Mode Verbose')
+	options = parser.parse_args()
+
+	while options.url == None or options.url == '':
+		print("ex: http://ofkztxcohimx34la.onion")
+		options.url = raw_input('You need a Url: ')
+
+	if options.ip == None:
+		options.ip = 'localhost'
+	if options.port == None:
+		options.port = 7000
+	else:
+		try:
+			options.port = int(options.port)
+		except:
+			print("You need a por number")
+			sys.exit(0)
+	if options.nodes == None:
+		options.nodes = '{ru}'
+
+	if options.verbose == None:
+		options.verbose = 0
+	
+
+	tor_net = tor(ip=options.ip, port=options.port, nodes=options.nodes, verbose=options.verbose)
+	print tor_net.query(options.url)
+	tor_net.quit()
 	
