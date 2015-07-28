@@ -40,6 +40,8 @@ class tor(object):
 
 		self.verbose = verbose
 
+		self.launch_tor()
+
 	def print_bootstrap_lines(self,line):
 		if "Bootstrapped " in line:
 			print(term.format(line, term.Color.BLUE))
@@ -72,7 +74,7 @@ class tor(object):
 			self.tor_process.wait()
 
 	def query(self, url):
-		self.launch_tor();opener=urllib2.build_opener(SocksiPyHandler(socks.PROXY_TYPE_SOCKS5, self.ip, self.port))
+		opener=urllib2.build_opener(SocksiPyHandler(socks.PROXY_TYPE_SOCKS5, self.ip, self.port))
 		try:
 			with closing(opener.open(url)) as r:
 				return r.read()
